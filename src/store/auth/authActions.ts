@@ -5,7 +5,7 @@ const types = {
   FETCH_AUTH_REQUEST: 'FETCH_AUTH_REQUEST',
   FETCH_AUTH_SUCCESS: 'FETCH_AUTH_SUCCESS',
   FETCH_AUTH_ERROR: 'FETCH_AUTH_ERROR'
-}
+};
 
 export default types;
 
