@@ -16,7 +16,7 @@ const initialState: RestaurantListingState = {
   loading: false
 };
 
-const authReducer = (state: RestaurantListingState = initialState, action: Action<string>) => {
+const restaurantListingReducer = (state: RestaurantListingState = initialState, action: Action<string>) => {
   switch (action.type) {
     case actionTypes.FETCH_RESTAURANT_LISTING_REQUEST:
       return {
@@ -45,4 +45,4 @@ const authReducer = (state: RestaurantListingState = initialState, action: Actio
   return state;
 }
 
-export default authReducer;
+export default restaurantListingReducer;
