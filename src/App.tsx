@@ -1,13 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router';
-import { Action, ActionCreator } from 'redux';
 import styled from 'styled-components';
-
-import { fetchAuthRequest } from 'store/auth/authActions';
-import { getAuthToken } from 'store/auth/authSelectors';
-import { AppState } from 'store/rootReducer';
-import { getLocation } from 'store/selectors';
 
 import PageHome from 'pages/home/PageHome';
 import PageNotFound from 'pages/notFound/PageNotFound';
@@ -28,20 +21,7 @@ const Title = styled.h1`
   margin: 0;
 `;
 
-interface Props {
-  token?: string;
-  // Location is included so the component will be re-rendered when location changes
-  location: any;
-  fetchAuthRequest: ActionCreator<Action>;
-}
-
-export class App extends React.Component<Props> {
-  public componentDidMount() {
-    if (!this.props.token) {
-      this.props.fetchAuthRequest();
-    }
-  }
-
+export default class App extends React.Component {
   public render() {
     return (
       <AppWrapper>
@@ -58,13 +38,3 @@ export class App extends React.Component<Props> {
     );
   }
 }
-
-const mapStateToProps = (state: AppState) => ({
-  token: getAuthToken(state),
-  location: getLocation(state)
-});
-
-export default connect(
-  mapStateToProps,
-  { fetchAuthRequest }
-)(App);

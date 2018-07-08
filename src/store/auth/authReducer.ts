@@ -5,13 +5,13 @@ import actionTypes from './authActions';
 export interface AuthState {
   token?: string;
   error?: string;
-  fetchingToken: boolean;
+  loading: boolean;
 }
 
 const initialState: AuthState = {
   token: undefined,
   error: undefined,
-  fetchingToken: false
+  loading: false
 };
 
 const authReducer = (state: AuthState = initialState, action: Action<string>) => {
@@ -21,21 +21,21 @@ const authReducer = (state: AuthState = initialState, action: Action<string>) =>
         ...state,
         token: undefined,
         error: undefined,
-        fetchingToken: true,
+        loading: true,
       };
 
     case actionTypes.FETCH_AUTH_SUCCESS:
       return {
         ...state,
         token: (action as SuccessAction<string>).data,
-        fetchingToken: false,
+        loading: false,
       };
 
     case actionTypes.FETCH_AUTH_ERROR:
       return {
         ...state,
         error: (action as ErrorAction).error,
-        fetchingToken: false,
+        loading: false,
       };
   }
 

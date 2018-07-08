@@ -16,6 +16,11 @@ interface Props {
   fetchRestaurantListingRequest: ActionCreator<Action>;
 }
 
+/** Api is returning duplicate ids so we'll to get rid of warnings by making a surrogate key */
+const uniqueKey = (restaurant: RestaurantSummary) => {
+  return `${restaurant.id}-${restaurant.general.name}-${restaurant.rating.average}`;
+}
+
 const getRestaurantLocation = (restaurant: RestaurantSummary) => {
   const { street_name, street_number, zipcode, city } = restaurant.address;
   return `${street_name} ${street_number}, ${zipcode} ${city}`;
@@ -32,7 +37,7 @@ export class PageRestaurantListing extends React.Component<Props> {
       <section>
         {loading && <div>Loading..</div>}
         {restaurants && restaurants.map(restaurant => (
-          <Link key={restaurant.id} to={RESTAURANT_DETAILS_PATH.replace(':id', restaurant.id)}>
+          <Link key={uniqueKey(restaurant)} to={RESTAURANT_DETAILS_PATH.replace(':id', restaurant.id)}>
             <div>{restaurant.general.name}</div>
             <div>Rating: {restaurant.rating.average}</div>
             <div>{getRestaurantLocation(restaurant)}</div>
