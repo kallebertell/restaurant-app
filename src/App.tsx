@@ -7,11 +7,13 @@ import styled from 'styled-components';
 import { fetchAuthRequest } from 'store/auth/authActions';
 import { getAuthToken } from 'store/auth/authSelectors';
 import { AppState } from 'store/rootReducer';
+import { getLocation } from 'store/selectors';
 
-const PageHome = () => <div>Welcome to pizza</div>
-const PageRestaurantListing = () => <div>Here we have restaurants</div>
-const PageRestaurantDetails = () => <div>Here's a specific restaurant</div>
-const PageNotFound = () => <div>Page not Found</div>;
+import PageHome from 'pages/home/PageHome';
+import PageNotFound from 'pages/notFound/PageNotFound';
+import PageRestaurantDetails from 'pages/restaurantDetails/PageRestaurantDetails';
+import PageRestaurantListing from 'pages/restaurantListing/PageRestaurantListing';
+import * as routePaths from 'pages/routePaths';
 
 const AppWrapper = styled.div`
   text-align: center;
@@ -28,6 +30,8 @@ const Title = styled.h1`
 
 interface Props {
   token?: string;
+  // Location is included so the component will be re-rendered when location changes
+  location: any;
   fetchAuthRequest: ActionCreator<Action>;
 }
 
@@ -45,9 +49,9 @@ export class App extends React.Component<Props> {
           <Title>Eat Pizza</Title>
         </Header>
         <Switch>
-          <Route exact={true} path="/" component={PageHome}/>
-          <Route exact={true} path="/restaurants/:city/:postCode" component={PageRestaurantListing}/>
-          <Route exact={true} path="/restaurant/:id" component={PageRestaurantDetails}/>
+          <Route exact={true} path={routePaths.HOME_PATH} component={PageHome}/>
+          <Route exact={true} path={routePaths.RESTAURANT_LISTING_PATH} component={PageRestaurantListing}/>
+          <Route exact={true} path={routePaths.RESTAURANT_DETAILS_PATH} component={PageRestaurantDetails}/>
           <Route path="*" component={PageNotFound} />
         </Switch>
       </AppWrapper>
@@ -56,7 +60,8 @@ export class App extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  token: getAuthToken(state)
+  token: getAuthToken(state),
+  location: getLocation(state)
 });
 
 export default connect(
