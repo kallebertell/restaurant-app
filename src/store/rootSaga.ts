@@ -1,9 +1,11 @@
-import { all, spawn } from 'redux-saga/effects'
+import { all, spawn } from 'redux-saga/effects';
+
+import authSagas from './auth/authSagas';
 
 export default function* rootSaga() {
   yield all(
     [
-      // add sagas here
+      ...authSagas
     ].map(saga => spawn(saga))
   );
 }

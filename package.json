@@ -5,13 +5,20 @@
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
-    ]
+    ],
+    "moduleNameMapper": {
+      "^(api.*)$": "<rootDir>/src/$1",
+      "^(components.*)$": "<rootDir>/src/$1",
+      "^(pages.*)$": "<rootDir>/src/$1",
+      "^(store.*)$": "<rootDir>/src/$1"
+    }
   },
   "dependencies": {
     "@types/enzyme": "^3.1.11",
     "@types/enzyme-adapter-react-16": "^1.0.2",
     "@types/react-redux": "^6.0.3",
     "@types/react-router-dom": "^4.2.7",
+    "axios": "^0.18.0",
     "connected-react-router": "^4.3.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

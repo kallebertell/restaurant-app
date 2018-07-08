@@ -1,6 +1,12 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router';
+import { Action, ActionCreator } from 'redux';
 import styled from 'styled-components';
+
+import { fetchAuthRequest } from 'store/auth/authActions';
+import { getAuthToken } from 'store/auth/authSelectors';
+import { AppState } from 'store/rootReducer';
 
 const PageHome = () => <div>Welcome to pizza</div>
 const PageRestaurantListing = () => <div>Here we have restaurants</div>
@@ -20,7 +26,18 @@ const Title = styled.h1`
   margin: 0;
 `;
 
-class App extends React.Component {
+interface Props {
+  token?: string;
+  fetchAuthRequest: ActionCreator<Action>;
+}
+
+export class App extends React.Component<Props> {
+  public componentDidMount() {
+    if (!this.props.token) {
+      this.props.fetchAuthRequest();
+    }
+  }
+
   public render() {
     return (
       <AppWrapper>
@@ -38,4 +55,11 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state: AppState) => ({
+  token: getAuthToken(state)
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchAuthRequest }
+)(App);
