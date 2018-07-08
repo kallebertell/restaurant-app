@@ -17,6 +17,14 @@ const initialState: RestaurantListingState = {
   loading: false
 };
 
+const ensureNonBrokenCategories = (categories: string[]): string[] => {
+  if (categories.length === 1 && categories[0].indexOf(',') !== -1) {
+    return categories[0].split(',');
+  }
+
+  return categories;
+};
+
 const restaurantListingReducer = (state: RestaurantListingState = initialState, action: Action<string>) => {
   switch (action.type) {
     case actionTypes.FETCH_RESTAURANT_LISTING_REQUEST:
@@ -31,10 +39,19 @@ const restaurantListingReducer = (state: RestaurantListingState = initialState, 
       const { data: restaurants } = (action as SuccessAction<FetchRestaurantListingResponse>).data;
       return {
         ...state,
-        // Api seems to return a random list of restaurants,
-        // and sometimes the list contains many restaurants with the same id.
-        // Assuming this is a backend bug and we'll just filter away duplicates.
-        restaurants: uniqBy(restaurants, 'id'),
+        restaurants:
+          // Api seems to return a random list of restaurants,
+          // and sometimes the list contains many restaurants with the same id.
+          // Assuming this is a backend bug and we'll just filter away duplicates.
+          uniqBy(restaurants, 'id')
+            // also the categories are broken
+            .map(restaurant => ({
+              ...restaurant,
+              general: {
+                ...restaurant.general,
+                categories: ensureNonBrokenCategories(restaurant.general.categories),
+              }
+            })),
         loading: false,
       };
 

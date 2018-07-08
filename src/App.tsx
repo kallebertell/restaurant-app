@@ -13,9 +13,9 @@ const AppWrapper = styled.div`
   text-align: center;
 `
 const Header = styled.header`
-  background: black;
-  color: white;
-  padding: 1rem;
+  background: ${styles.COLOR_BG_DARK};
+  color: ${styles.COLOR_BRAND_SECONDARY};
+  padding: ${styles.PAD};
 `
 const Title = styled.h1`
   text-transform: uppercase;
