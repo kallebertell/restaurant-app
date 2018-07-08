@@ -32,7 +32,6 @@ export interface MenuItem {
 }
 
 export default function fetchRestaurantDetails(token: string, id: number) {
-
   if (!API_SUPPORTS_CORS) {
     return new Promise(resolve => {
       setTimeout(() => resolve({

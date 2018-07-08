@@ -13,9 +13,11 @@ interface Props {
   match: any;
 }
 
-export class PageRestaurantDetails extends React.Component<any> {
+export class PageRestaurantDetails extends React.Component<Props> {
   public componentDidMount() {
-    this.props.fetchRestaurantDetailsRequest(this.props.match.params.id);
+    if (!this.props.restaurant) {
+      this.props.fetchRestaurantDetailsRequest(this.props.match.params.id);
+    }
   }
 
   public render() {
@@ -33,8 +35,8 @@ export class PageRestaurantDetails extends React.Component<any> {
   }
 }
 
-const mapStateToProps = (state: AppState, props: Props) => ({
-  restaurant: getRestaurantDetails(state, props),
+const mapStateToProps = (state: AppState) => ({
+  restaurant: getRestaurantDetails(state),
   loading: getRestaurantDetailsLoading(state)
 });
 

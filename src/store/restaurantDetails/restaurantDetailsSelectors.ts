@@ -1,11 +1,28 @@
+import { createSelector } from 'reselect';
+
+import { RestaurantDetails } from 'api';
+import * as routePaths from 'pages/routePaths';
 import { AppState } from '../rootReducer';
+import { RestaurantMap } from './restaurantDetailsReducer';
 
-export const getSelectedRestaurantId = (state: AppState, props: any) => {
-  return state.router.location.search
+const RESTAURANT_ID_PATTERN = routePaths.RESTAURANT_DETAILS_PATH.replace(':id', '(.*)$');
+
+/**
+ * This is also passed to component props already parsed,
+ * but getting it from components props will break memoiziation of the selector.
+ */
+export const getSelectedRestaurantId = (state: AppState): string | undefined => {
+  const match = state.router.location.pathname.match(RESTAURANT_ID_PATTERN);
+  return match ? match[1] : undefined;
 }
 
-export const getRestaurantDetails = (state: AppState, props: any) => {
-  return state.restaurantDetails.restaurants[props.match.params.id];
-}
+const getRestaurants = (state: AppState): RestaurantMap => state.restaurantDetails.restaurants;
 
-export const getRestaurantDetailsLoading  = (state: AppState) => state.restaurantDetails.loading;
+export const getRestaurantDetails = createSelector(
+  getRestaurants,
+  getSelectedRestaurantId,
+  (restaurants: RestaurantMap, id?: string): RestaurantDetails | undefined =>
+    id ? restaurants[id] : undefined
+);
+
+export const getRestaurantDetailsLoading  = (state: AppState): boolean => state.restaurantDetails.loading;
