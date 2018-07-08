@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash';
 import { Action } from 'redux';
 import { ErrorAction, SuccessAction } from '../actionTypes';
 import actionTypes from './restaurantListingActions';
@@ -30,7 +31,10 @@ const restaurantListingReducer = (state: RestaurantListingState = initialState, 
       const { data: restaurants } = (action as SuccessAction<FetchRestaurantListingResponse>).data;
       return {
         ...state,
-        restaurants,
+        // Api seems to return a random list of restaurants,
+        // and sometimes the list contains many restaurants with the same id.
+        // Assuming this is a backend bug and we'll just filter away duplicates.
+        restaurants: uniqBy(restaurants, 'id'),
         loading: false,
       };
 
