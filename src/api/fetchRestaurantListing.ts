@@ -14,6 +14,13 @@ export interface Pagination {
   offset: number;
 }
 
+export interface Address {
+  city: string;
+  zipcode: string;
+  street_name: string;
+  street_number: string;
+}
+
 export interface RestaurantSummary {
   id: string;
   general: {
@@ -25,12 +32,7 @@ export interface RestaurantSummary {
   rating: {
     average: number;
   },
-  address: {
-    city: string;
-    zipcode: string;
-    street_name: string,
-    street_number: string
-  }
+  address: Address;
 }
 
 export default function fetchRestaurantListing(token: string) {

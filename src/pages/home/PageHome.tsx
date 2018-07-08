@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { Link } from "react-router-dom";
 import styled from 'styled-components';
 
+import CallToAction from 'components/CallToAction';
+import * as styles from 'styles';
 import { RESTAURANT_LISTING_PATH } from '../routePaths';
 
 const WelcomeMessage = styled.h1`
   text-align: center;
-  font-size: 3rem;
-`
+  font-size: ${styles.FONT_SIZE_BIG};
+  margin-top: 6rem;
+  margin-bottom: 10rem;
+`;
 
 const OFFICE_RESTAURANTS_PATH =
   RESTAURANT_LISTING_PATH
@@ -19,7 +22,7 @@ export default class PageHome extends React.Component {
     return (
       <section>
         <WelcomeMessage>Welcome to pizza</WelcomeMessage>
-        <Link to={OFFICE_RESTAURANTS_PATH}>Find a restaurant</Link>
+        <CallToAction to={OFFICE_RESTAURANTS_PATH}>Find a restaurant</CallToAction>
       </section>
     );
   }

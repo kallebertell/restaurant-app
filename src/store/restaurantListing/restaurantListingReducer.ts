@@ -1,4 +1,4 @@
-import { uniqBy } from 'lodash';
+import { uniq, uniqBy } from 'lodash';
 import { Action } from 'redux';
 import { ErrorAction, SuccessAction } from '../actionTypes';
 import actionTypes from './restaurantListingActions';
@@ -14,15 +14,16 @@ export interface RestaurantListingState {
 const initialState: RestaurantListingState = {
   restaurants: undefined,
   error: undefined,
-  loading: false
+  loading: false,
 };
 
 const ensureNonBrokenCategories = (categories: string[]): string[] => {
   if (categories.length === 1 && categories[0].indexOf(',') !== -1) {
-    return categories[0].split(',');
+    // may contain duplicates
+    return uniq(categories[0].split(','));
   }
 
-  return categories;
+  return uniq(categories);
 };
 
 const restaurantListingReducer = (state: RestaurantListingState = initialState, action: Action<string>) => {

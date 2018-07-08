@@ -4,25 +4,14 @@ import { Link } from 'react-router-dom';
 import { Action, ActionCreator } from 'redux';
 import styled from 'styled-components';
 
-import { RestaurantSummary } from 'api';
-import { fetchRestaurantListingRequest } from 'store/restaurantListing/restaurantListingActions';
-import { getRestaurantListing, getRestaurantListingLoading } from 'store/restaurantListing/restaurantListingSelectors';
+import { Address, RestaurantSummary } from 'api';
+import { fetchRestaurantListingRequest, setRestaurantFilter, SetRestaurantFilterAction } from 'store/restaurantListing/restaurantListingActions';
+import { getFilter, getFilteredListing, getRestaurantListingLoading } from 'store/restaurantListing/restaurantListingSelectors';
 import { AppState } from 'store/rootReducer';
 
 import { RESTAURANT_DETAILS_PATH } from '../routePaths';
 
 import * as styles from 'styles';
-
-interface Props {
-  restaurants?: RestaurantSummary[];
-  loading: boolean;
-  fetchRestaurantListingRequest: ActionCreator<Action>;
-}
-
-const getRestaurantLocation = (restaurant: RestaurantSummary) => {
-  const { street_name, street_number, zipcode, city } = restaurant.address;
-  return `${street_name} ${street_number}, ${zipcode} ${city}`;
-};
 
 const RestaurantCardLink = styled(Link)`
   display: flex;
@@ -70,11 +59,6 @@ const Rating = styled.div`
   font-size: ${styles.FONT_SIZE_BIG};
 `;
 
-const RestaurantLocation = styled.div`
-  font-size: ${styles.FONT_SIZE_SMALL};
-  color: ${styles.COLOR_TEXT_MUTED};
-`;
-
 const Categories = styled.div`
   display: flex;
   flex-direction: row;
@@ -89,16 +73,44 @@ const Category = styled.div`
   border-radius: ${styles.BORDER_RADIUS};
 `;
 
-export class PageRestaurantListing extends React.Component<Props> {
+const RestaurantLocation = styled(({ street_name, street_number, zipcode, city }: Address) => (
+  <span>${street_name} ${street_number}, ${zipcode} ${city}</span>
+))`
+  font-size: ${styles.FONT_SIZE_SMALL};
+  color: ${styles.COLOR_TEXT_MUTED};
+`;
+
+interface Props {
+  restaurants?: RestaurantSummary[];
+  loading: boolean;
+  filter?: string;
+  fetchRestaurantListingRequest: ActionCreator<Action>;
+  setRestaurantFilter: (filter: string) => SetRestaurantFilterAction;
+}
+
+export class PageRestaurantListing extends React.Component<any> {
   public componentDidMount() {
     this.props.fetchRestaurantListingRequest();
   }
 
+  public handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.props.setRestaurantFilter(event.currentTarget.value);
+  }
+
   public render() {
-    const { restaurants, loading } = this.props;
+    const { restaurants, loading, filter } = this.props as Props;
     return (
       <section>
         {loading && <div>Loading..</div>}
+        <div>
+          <select value={filter} onChange={this.handleFilterChange}>
+            <option value="none">Filter by category..</option>
+            <option value="indisch">indisch</option>
+            <option value="baguette">baguette</option>
+            <option value="pizza-pasta">pizza-pasta</option>
+            <option value="amerikanish">amerikanish</option>
+          </select>
+        </div>
         {restaurants && restaurants.map(restaurant => (
           <RestaurantCardLink key={restaurant.id} to={RESTAURANT_DETAILS_PATH.replace(':id', restaurant.id)}>
             <RestaurantLogo src={restaurant.general.logo_uri}/>
@@ -108,7 +120,7 @@ export class PageRestaurantListing extends React.Component<Props> {
                   <RestaurantName>{restaurant.general.name}</RestaurantName>
                   <Rating>{restaurant.rating.average}</Rating>
                 </RestaurantHeader>
-                <RestaurantLocation>{getRestaurantLocation(restaurant)}</RestaurantLocation>
+                <RestaurantLocation {...restaurant.address} />
               </div>
               <Categories>
                 {restaurant.general.categories.map(category => (
@@ -124,11 +136,12 @@ export class PageRestaurantListing extends React.Component<Props> {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  restaurants: getRestaurantListing(state),
-  loading: getRestaurantListingLoading(state)
+  restaurants: getFilteredListing(state),
+  loading: getRestaurantListingLoading(state),
+  filter: getFilter(state)
 });
 
 export default connect(
   mapStateToProps,
-  { fetchRestaurantListingRequest }
+  { fetchRestaurantListingRequest, setRestaurantFilter }
 )(PageRestaurantListing);
