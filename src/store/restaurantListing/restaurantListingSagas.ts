@@ -15,7 +15,7 @@ function* changeQueryParams(filter: string, sort: string) {
   const queryParams = Object.assign(
     {},
     filter && filter !== 'none' ? { filter } : undefined,
-    sort && sort !== 'none' ? {sort } : undefined
+    sort && sort !== 'none' ? { sort } : undefined
   );
 
   return yield put(
@@ -43,7 +43,7 @@ function* changeSorting(action: actions.SetRestaurantSortAction) {
 }
 
 function* watchSetRestaurantSort() {
-  yield takeLatest(actionTypes.SET_RESTAURANT_FILTER, changeSorting);
+  yield takeLatest(actionTypes.SET_RESTAURANT_SORT, changeSorting);
 }
 
 function* fetchRestaurantListingWorker(action: Action) {

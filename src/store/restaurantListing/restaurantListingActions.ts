@@ -4,8 +4,6 @@ import { FetchRestaurantListingResponse } from 'api';
 
 import { ErrorAction, SuccessAction } from '../actionTypes';
 
-
-
 const types = {
   SET_RESTAURANT_FILTER: 'SET_RESTAURANT_FILTER',
   SET_RESTAURANT_SORT: 'SET_RESTAURANT_SORT',
@@ -21,13 +19,15 @@ export interface SetRestaurantFilterAction extends Action<string> {
   filter: string;
 }
 
+export type SortMethod = 'name' | 'rating';
+
 export interface SetRestaurantSortAction extends Action<string> {
-  sort: string;
+  sort: SortMethod;
 }
 
 // Action creators
 export const setRestaurantFilter = (filter: string): SetRestaurantFilterAction => ({ type: types.SET_RESTAURANT_FILTER, filter });
-export const setRestaurantSort = (sort: string): SetRestaurantSortAction => ({ type: types.SET_RESTAURANT_FILTER, sort });
+export const setRestaurantSort = (sort: SortMethod): SetRestaurantSortAction => ({ type: types.SET_RESTAURANT_SORT, sort });
 
 export const fetchRestaurantListingRequest = (): Action<string> => ({ type: types.FETCH_RESTAURANT_LISTING_REQUEST});
 export const fetchRestaurantListingSuccess = (response: FetchRestaurantListingResponse): SuccessAction<FetchRestaurantListingResponse> => ({ type: types.FETCH_RESTAURANT_LISTING_SUCCESS, data: response });
