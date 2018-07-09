@@ -5,6 +5,7 @@ import { Action } from 'redux';
 import styled from 'styled-components';
 
 import { Address, RestaurantSummary } from 'api';
+import Logo from 'components/Logo';
 import { fetchRestaurantListingRequest, setRestaurantFilter, SetRestaurantFilterAction, setRestaurantSort, SetRestaurantSortAction, SortMethod } from 'store/restaurantListing/restaurantListingActions';
 import { getAvailableCategories, getFilter, getFilteredListing, getRestaurantListingLoading, getSort } from 'store/restaurantListing/restaurantListingSelectors';
 import { AppState } from 'store/rootReducer';
@@ -12,12 +13,6 @@ import { AppState } from 'store/rootReducer';
 import { RESTAURANT_DETAILS_PATH } from '../routePaths';
 
 import * as styles from 'styles';
-
-import logo from './logo.svg';
-
-const Logo = styled.img`
-  width: 20rem;
-`;
 
 const RestaurantCardLink = styled(Link)`
   display: flex;
@@ -126,8 +121,7 @@ export class PageRestaurantListing extends React.Component<StateProps & ActionPr
     return (
       <section>
         {loading && <div>Loading..</div>}
-
-        <Logo src={logo} />
+        <Logo />
         <ToolBar>
           <select value={filter} onChange={this.handleFilterChange}>
             <option value="none">Filter by category..</option>
