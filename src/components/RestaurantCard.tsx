@@ -16,11 +16,6 @@ const RestaurantCard = styled.div`
 
   border: 1px solid ${styles.COLOR_BORDER};
   padding: ${styles.PAD_BIG};
-  margin-bottom: ${styles.PAD};
-
-  &:hover {
-    border: 1px solid ${styles.COLOR_BRAND_PRIMARY};
-  }
 `;
 
 const RestaurantInfo = styled.div`

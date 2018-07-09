@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders 1`] = `
+<styled.div>
+  <styled.img
+    src="http://placehold.it/200/200"
+  />
+  <styled.div>
+    <div>
+      <styled.div>
+        <styled.div>
+          food place
+        </styled.div>
+        <styled.div>
+          4.2
+        </styled.div>
+      </styled.div>
+      <Styled(Component)
+        city="Berlin"
+        street_name="street"
+        street_number="1"
+        zipcode="10000"
+      />
+    </div>
+    <styled.div>
+      <styled.div
+        key="doner"
+      >
+        doner
+      </styled.div>
+      <styled.div
+        key="pizza"
+      >
+        pizza
+      </styled.div>
+    </styled.div>
+  </styled.div>
+</styled.div>
+`;

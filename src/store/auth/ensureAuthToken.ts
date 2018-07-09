@@ -13,7 +13,6 @@ import { getAuthToken, getTokenIsLoading } from './authSelectors';
 export default function* ensureAuthToken() { 
   const token = yield select(getAuthToken);
   const tokenIsLoading = yield select(getTokenIsLoading);
-
   if (!token) {
     if (!tokenIsLoading) {
       yield put(actions.fetchAuthRequest());
@@ -28,5 +27,5 @@ export default function* ensureAuthToken() { 
     }
   }
 
-  return yield select(getAuthToken)
+  return yield select(getAuthToken);
 }

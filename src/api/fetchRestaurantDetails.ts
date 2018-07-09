@@ -1,19 +1,21 @@
 import axios from 'axios';
 import { BASE_URL } from './apiConfig';
+import { Address } from './fetchRestaurantListing';
 import restaurantDetailsResponse from './restaurantDetailsResponse.json';
-
-// Api returns 403 for the cors pre-flight request.
-// Probably an oversight on the backend
-const API_SUPPORTS_CORS = false;
 
 export interface RestaurantDetails {
   info: RestaurantInfo;
+  rating: {
+    average: number;
+  },
+  address: Address,
+  categories: string[],
   sections: MenuSection[];
 }
 
 export interface RestaurantInfo {
   name: string;
-  logo_uri: string;
+  logoUri: string;
   tags: string[];
   categories: string[];
 }
@@ -32,14 +34,6 @@ export interface MenuItem {
 }
 
 export default function fetchRestaurantDetails(token: string, id: number) {
-  if (!API_SUPPORTS_CORS) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve({
-        data: restaurantDetailsResponse
-      }), 1000);
-    });
-  }
-
   return axios.get(
     BASE_URL + '/restaurant/' + id,
     {
@@ -47,5 +41,13 @@ export default function fetchRestaurantDetails(token: string, id: number) {
         token
       }
     }
-  )
+  ).catch(reason => {
+    const isProbablyCorsError = reason.toString().indexOf('Error: Network Error') !== -1;
+    if (isProbablyCorsError) {
+      /* tslint:disable-next-line */
+      console.warn('Fetching restaurant details failed. Assuming CORS config is incorrect in api, for demo purposes we return a dummy restaurant');
+      return { data: restaurantDetailsResponse };
+    }
+    throw reason;
+  })
 }

@@ -14,6 +14,16 @@ import { RESTAURANT_DETAILS_PATH } from '../routePaths';
 
 import * as styles from 'styles';
 
+const RestaurantLink = styled(Link)`
+  text-decoration: none;
+  display: block;
+  margin-bottom: ${styles.PAD};
+
+  &:hover {
+    box-shadow: 0 0 3px ${styles.COLOR_BRAND_PRIMARY};
+  }
+`;
+
 const ToolBar = styled.div`
   margin: ${styles.PAD} 0;
   text-align: right;
@@ -74,7 +84,7 @@ export class PageRestaurantListing extends React.Component<StateProps & ActionPr
 
         <div>
           {restaurants.map(restaurant => (
-            <Link key={restaurant.id} to={RESTAURANT_DETAILS_PATH.replace(':id', restaurant.id)}>
+            <RestaurantLink key={restaurant.id} to={RESTAURANT_DETAILS_PATH.replace(':id', restaurant.id)}>
               <RestaurantCard
                 name={restaurant.general.name}
                 logoUri={restaurant.general.logo_uri}
@@ -82,7 +92,7 @@ export class PageRestaurantListing extends React.Component<StateProps & ActionPr
                 address={restaurant.address}
                 categories={restaurant.general.categories}
               />
-            </Link>
+            </RestaurantLink>
           ))}
         </div>
       </section>
