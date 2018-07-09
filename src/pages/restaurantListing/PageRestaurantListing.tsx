@@ -90,7 +90,7 @@ const ToolBar = styled.div`
 `;
 
 interface StateProps {
-  restaurants?: RestaurantSummary[];
+  restaurants: RestaurantSummary[];
   loading: boolean;
   filter?: string;
   sort?: SortMethod;
@@ -120,8 +120,10 @@ export class PageRestaurantListing extends React.Component<StateProps & ActionPr
     const { restaurants, loading, filter, sort, availableCategories } = this.props;
     return (
       <section>
-        {loading && <div>Loading..</div>}
         <Logo />
+
+        {loading && <div>Loading..</div>}
+
         <ToolBar>
           <select value={filter} onChange={this.handleFilterChange}>
             <option value="none">Filter by category..</option>
@@ -138,7 +140,7 @@ export class PageRestaurantListing extends React.Component<StateProps & ActionPr
         </ToolBar>
 
         <div>
-          {restaurants && restaurants.map(restaurant => (
+          {restaurants.map(restaurant => (
             <RestaurantCardLink key={restaurant.id} to={RESTAURANT_DETAILS_PATH.replace(':id', restaurant.id)}>
               <RestaurantLogo src={restaurant.general.logo_uri}/>
               <RestaurantInfo>

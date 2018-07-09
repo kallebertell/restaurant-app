@@ -1,5 +1,5 @@
 
-export const COLOR_BRAND_PRIMARY = 'green';
+export const COLOR_BRAND_PRIMARY = '#F6C844';
 export const COLOR_BRAND_SECONDARY = 'yellow';
 
 export const COLOR_BORDER = '#ccc';
