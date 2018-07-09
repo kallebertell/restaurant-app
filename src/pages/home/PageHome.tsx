@@ -12,6 +12,10 @@ const WelcomeMessage = styled.h1`
   margin-bottom: 10rem;
 `;
 
+const Section = styled.section`
+  text-align: center;
+`;
+
 const OFFICE_RESTAURANTS_PATH =
   RESTAURANT_LISTING_PATH
     .replace(':city', 'Berlin')
@@ -20,10 +24,10 @@ const OFFICE_RESTAURANTS_PATH =
 export default class PageHome extends React.Component {
   public render() {
     return (
-      <section>
+      <Section>
         <WelcomeMessage>Welcome to pizza</WelcomeMessage>
         <CallToAction to={OFFICE_RESTAURANTS_PATH}>Find a restaurant</CallToAction>
-      </section>
+      </Section>
     );
   }
 }
