@@ -42,6 +42,7 @@ export default function fetchRestaurantDetails(token: string, id: number) {
       }
     }
   ).catch(reason => {
+    // HACK: cors doesnt seem to be enabled because preflight req gets 403.
     const isProbablyCorsError = reason.toString().indexOf('Error: Network Error') !== -1;
     if (isProbablyCorsError) {
       /* tslint:disable-next-line */

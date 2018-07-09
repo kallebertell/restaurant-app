@@ -17,6 +17,8 @@ const initialState: RestaurantListingState = {
   loading: false,
 };
 
+// HACK: the categories array looks like this:
+// ['doner,pizza,pasta']. I assume it's a api bug.
 const ensureNonBrokenCategories = (categories: string[]): string[] => {
   if (categories.length === 1 && categories[0].indexOf(',') !== -1) {
     // may contain duplicates
@@ -41,7 +43,7 @@ const restaurantListingReducer = (state: RestaurantListingState = initialState, 
       return {
         ...state,
         restaurants:
-          // Api seems to return a random list of restaurants,
+          // HACK: Api seems to return a random list of restaurants,
           // and sometimes the list contains many restaurants with the same id.
           // Assuming this is a backend bug and we'll just filter away duplicates.
           uniqBy(restaurants, 'id')
